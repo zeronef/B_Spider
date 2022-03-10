@@ -55,6 +55,7 @@ class B_Spider:
             u6=f'https://api.bilibili.com/x/space/arc/search?mid={uid}&ps=30&tid=0&pn={i+1}&keyword=&order=pubdate&jsonp=jsonp'
             rep=requests.get(u6,headers=headers,timeout=3)
             data=rep.json()['data']['list']['vlist']
+            time.sleep(random.random())
             for _ in data:
                 rdata={}
                 rdata['bvid']=_['bvid']
@@ -66,6 +67,7 @@ class B_Spider:
             'time':int(time.time()),
             'datas':rdatas
         }
+        print(datas['time'],"抓取成功")
         return datas
     #爬取用户的所有投稿视频
     def run_3(self):
