@@ -46,19 +46,20 @@ class B_Spider:
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
         }
-        u6=f'https://api.bilibili.com/x/space/arc/search?mid={uid}&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp'
+        u6=f'https://api.bilibili.com/x/space/arc/search?mid={uid}&ps=30&tid=0&pn=1&keyword=&order=click&jsonp=jsonp'
         rep=requests.get(u6,headers=headers,timeout=3)
         data=rep.json()['data']
         page=math.ceil(data['page']['count']/30)
         rdatas=[]
         for i in range(page):
-            u6=f'https://api.bilibili.com/x/space/arc/search?mid={uid}&ps=30&tid=0&pn={i+1}&keyword=&order=pubdate&jsonp=jsonp'
+            u6=f'https://api.bilibili.com/x/space/arc/search?mid={uid}&ps=30&tid=0&pn={i+1}&keyword=&order=click&jsonp=jsonp'
             rep=requests.get(u6,headers=headers,timeout=3)
             data=rep.json()['data']['list']['vlist']
             time.sleep(random.random())
             for _ in data:
                 rdata={}
                 rdata['bvid']=_['bvid']
+                rdata['title']=_['title']
                 rdata['play']=_['play']
                 rdata['video_review']=_['video_review'] #弹幕数
                 rdata['comment']=_['comment']           #评论数
