@@ -1,5 +1,6 @@
 
 
+import datetime
 import requests
 import json
 import time
@@ -68,7 +69,6 @@ class B_Spider:
             'time':int(time.time()),
             'datas':rdatas
         }
-        print(datas['time'],"抓取成功")
         return datas
     #爬取用户的所有投稿视频
     def run_3(self):
@@ -86,9 +86,10 @@ class B_Spider:
         while True:
             with open(datapath,'a',newline='') as f:
                 writer=csv.DictWriter(f,fieldnames=fieldnames)
-                time.sleep(fr+random.random()*2-1)
                 data=self.get_user_video(uid=uid)
                 writer.writerow(data)
+                print(datetime.datetime.now(),"   爬取成功")
+                time.sleep(fr+random.random()*2-1)
     #爬取视频数据
     def run_1(self):
         
@@ -106,10 +107,12 @@ class B_Spider:
         while True:
             with open(datapath,'a',newline='') as f:
                 writer=csv.DictWriter(f,fieldnames=fieldnames)
-                time.sleep(fr+random.random()*2-1)
+                
                 data=self.get_video_data(bvid)
                 writer.writerow(data)
+                
                 print(data)
+                time.sleep(fr+random.random()*2-1)
     #爬取用户粉丝量
     def run_2(self):
         uid=input("输入uid:")
@@ -126,10 +129,11 @@ class B_Spider:
         while True:
             with open(datapath,'a',newline='') as f:
                 writer=csv.DictWriter(f,fieldnames=fieldnames)
-                time.sleep(fr+random.random()*2-1)
+                
                 data=self.get_user_st(uid=uid)
                 writer.writerow(data)
                 print(data)
+                time.sleep(fr+random.random()*2-1)
 # %%
 op=int(input("爬取方式:\n1:爬取用户粉丝量\n2:爬取用户所有视频数据\n3:爬取视频数据\n"))
 l=B_Spider()
