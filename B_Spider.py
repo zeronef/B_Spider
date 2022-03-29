@@ -1,6 +1,7 @@
 
 
 import datetime
+from multiprocessing.dummy import Process
 import requests
 import json
 import time
@@ -90,11 +91,47 @@ class B_Spider:
                 writer.writerow(data)
                 print(datetime.datetime.now(),"   爬取成功")
                 time.sleep(fr+random.random()*2-1)
+    def run_3_2(self,uid,fr=300):
+        datapath=uid+'_allvideo.csv'
+        fieldnames=['time','datas']
+        try:
+            f=open(datapath)
+            f.close()
+        except FileNotFoundError:
+            with open(datapath,'w',newline='') as f:
+                writer=csv.DictWriter(f,fieldnames=fieldnames)
+                writer.writeheader()
+        while True:
+            with open(datapath,'a',newline='') as f:
+                writer=csv.DictWriter(f,fieldnames=fieldnames)
+                data=self.get_user_video(uid=uid)
+                writer.writerow(data)
+                print(datetime.datetime.now(),"   爬取成功")
+                time.sleep(fr+random.random()*2-1)
     #爬取视频数据
     def run_1(self):
         
         bvid=input("输入BV号:")
         fr=int(input("爬取频率 s/次:"))
+        datapath=bvid+'.csv'
+        fieldnames=['time', 'view', 'like', 'coin', 'favorite', 'danmaku', 'reply', 'share']
+        try:
+            f=open(datapath)
+            f.close()
+        except FileNotFoundError:
+            with open(datapath,'w',newline='') as f:
+                writer=csv.DictWriter(f,fieldnames=fieldnames)
+                writer.writeheader()
+        while True:
+            with open(datapath,'a',newline='') as f:
+                writer=csv.DictWriter(f,fieldnames=fieldnames)
+                
+                data=self.get_video_data(bvid)
+                writer.writerow(data)
+                
+                print(data)
+                time.sleep(fr+random.random()*2-1)
+    def run_1_2(self,bvid,fr=300):
         datapath=bvid+'.csv'
         fieldnames=['time', 'view', 'like', 'coin', 'favorite', 'danmaku', 'reply', 'share']
         try:
@@ -134,13 +171,23 @@ class B_Spider:
                 writer.writerow(data)
                 print(data)
                 time.sleep(fr+random.random()*2-1)
-# %%
-op=int(input("爬取方式:\n1:爬取用户粉丝量\n2:爬取用户所有视频数据\n3:爬取视频数据\n"))
-l=B_Spider()
-if op==1:
-    l.run_2()
-elif op==2:
-    l.run_3()
-elif op==3:
-    l.run_1()
+    def run_2_2(self,uid,fr=300):
+
+        datapath=uid+'.csv'
+        fieldnames=['time','follower']
+        try:
+            f=open(datapath)
+            f.close()
+        except FileNotFoundError:
+            with open(datapath,'w',newline='') as f:
+                writer=csv.DictWriter(f,fieldnames=fieldnames)
+                writer.writeheader()
+        while True:
+            with open(datapath,'a',newline='') as f:
+                writer=csv.DictWriter(f,fieldnames=fieldnames)
+                
+                data=self.get_user_st(uid=uid)
+                writer.writerow(data)
+                print(data)
+                time.sleep(fr+random.random()*2-1)
 
